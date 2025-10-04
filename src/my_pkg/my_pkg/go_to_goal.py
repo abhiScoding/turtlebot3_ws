@@ -58,19 +58,19 @@ class GoToGoal(Node):
 
         cmd = Twist()
 
-        if abs(angle_error) > 0.01:
-            cmd.angular.z = 1.5 * angle_error
-            cmd.linear.x = 0.0
-        else:
-            cmd.angular.z = 0.0
-
-            if abs(distance) > 0.05:
-                cmd.linear.x = 0.5 * distance
+        if distance > 0.05:  # not yet at goal
+            if abs(angle_error) > 0.1:
+                # Rotate towards goal
+                cmd.angular.z = 0.5 * angle_error
             else:
-                cmd.linear.x = 0.0
-                self.get_logger().info("Goal reached!")
-                self.goal_x = None
-                self.goal_y = None
+                # Move forward
+                cmd.linear.x = 0.2 * distance
+                cmd.angular.z = 0.3 * angle_error
+        else:
+            # Stop when goal reached
+            cmd.linear.x = 0.0
+            cmd.angular.z = 0.0
+            self.get_logger().info("Goal reached!")
 
         self.cmd_pub.publish(cmd)
 
