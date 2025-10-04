@@ -1,0 +1,21 @@
+# Ignore build/install/log (ROS2 build artifacts)
+build/
+install/
+log/
+
+# Ignore all packages except my_pkg
+src/*
+!src/my_pkg/
+
+# Ignore common temporary files
+**/__pycache__/
+*.pyc
+*.pyo
+*.swp
+*.swo
+
+# Ignore editor and system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
